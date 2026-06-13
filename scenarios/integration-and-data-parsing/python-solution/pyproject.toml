@@ -1,0 +1,19 @@
+[project]
+name = "python-solution"
+version = "0.1.0"
+description = "Integration and data parsing"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["test"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
+
+[tool.pyright]
+pythonPath = "src"
