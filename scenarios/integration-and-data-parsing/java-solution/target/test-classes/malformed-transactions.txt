@@ -1,0 +1,6 @@
+INVALID_DATA
+TXN_001:abc:USD
+TXN_002:100.00
+:::
+null 
+ 
