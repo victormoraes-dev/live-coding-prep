@@ -324,6 +324,41 @@ class TreeNodeTest {
             assertTrue(root.sameStructure(other));
         }
 
+       @Test
+        void realWorldScenarioBrazilHierarchyV2() {
+            // Source A:              Source B:
+            // Brazil                 Brazil
+            //   ├── PR                 ├── RJ
+            //   │   ├── Londrina       │   ├── Niterói
+            //   │   └── Curitiba       │   └── Rio
+            //   ├── SP                 └── PR
+            //   │   ├── São Paulo          ├── Curitiba
+            //   │   └── Campinas           └── Londrina
+            //   └── RJ                 
+            //       ├── Rio            
+            //       └── Niterói        
+            
+            TreeNode<String> pr = root.addChild("PR");
+            pr.addChild("Londrina");
+            pr.addChild("Curitiba");
+            TreeNode<String> sp = root.addChild("SP");
+            sp.addChild("São Paulo");
+            sp.addChild("Campinas");
+            TreeNode<String> rj = root.addChild("RJ");
+            rj.addChild("Rio");
+            rj.addChild("Niterói");
+            
+            TreeNode<String> other = new TreeNode<>("root");
+            TreeNode<String> otherRj = other.addChild("RJ");
+            otherRj.addChild("Niterói");
+            otherRj.addChild("Rio");
+            TreeNode<String> otherPr = other.addChild("PR");
+            otherPr.addChild("Curitiba");
+            otherPr.addChild("Londrina");
+            
+            assertTrue(root.sameStructure(other));
+        }
+
         @Test
         void threeChildrenAllDifferentCombinations() {
             // Tests that matching algorithm doesn't have false positives
