@@ -75,13 +75,18 @@ class TreeNode<T> {
 
 ```
 sameStructure(a, b):
-  1. Different data values? → false
-  2. Different child count? → false
-  3. For each child in A:
-       find an unmatched child in B with sameStructure
-       if none found → false
-       else mark that child in B as matched
-  4. All children matched? → true
+  1. a.data != b.data?              → false
+  2. a.children.size() != b.size()? → false
+  3. unmatched = copy of b.children
+  4. for each childA in a.children:
+       found = false
+       for i in unmatched:
+         if sameStructure(childA, unmatched[i]):
+           unmatched.remove(i)   ← consume match, prevent reuse
+           found = true
+           break
+       if !found → false
+  5. return true
 
 Time: O(n²) worst case
 Space: O(h) recursion stack
@@ -291,46 +296,188 @@ Brazil                 Brazil
   ├── PR                 ├── RJ
   │   ├── Londrina       │   ├── Niterói
   │   └── Curitiba       │   └── Rio
-  ├── SP                 └── PR
-  │   ├── São Paulo          ├── Curitiba
-  │   └── Campinas           └── Londrina
-  └── RJ
-      ├── Rio
-      └── Niterói
+  ├── SP                 ├── PR
+  │   ├── São Paulo      │   ├── Curitiba
+  │   └── Campinas       │   └── Londrina
+  └── RJ                 └── SP
+      ├── Rio                 ├── Campinas
+      └── Niterói             └── São Paulo
 ```
 
 Same structure? **Yes** — only child order differs.
 
-**The comparison algorithm:**
+**The comparison algorithm — step by step:**
 
 ```java
 boolean sameStructure(TreeNode<String> a, TreeNode<String> b) {
+```
+
+The method is called recursively with one node from tree A and one candidate node from tree B. On the first call, both are the roots.
+
+---
+
+```java
     if (!a.data.equals(b.data)) return false;
+```
+
+**Step 1 — Check node values.** If the data values don't match (e.g. `"PR"` vs `"RJ"`), these two nodes can't be equal. Return false immediately — no point checking children.
+
+---
+
+```java
     if (a.children.size() != b.children.size()) return false;
+```
 
+**Step 2 — Check child count.** Even if the values match, the subtrees can't be equal if the number of children differs. This also handles leaf nodes: both have 0 children, so they pass through and reach `return true` without entering the loop.
+
+---
+
+```java
     List<TreeNode<String>> unmatched = new ArrayList<>(b.children);
+```
 
+**Step 3 — Create a working copy of B's children.** This is a shallow copy — it contains the same node references, but is a separate list we can mutate. We'll remove nodes from it as they get matched, so each child in B can only be used once.
+
+---
+
+```java
     for (TreeNode<String> childA : a.children) {
         boolean found = false;
+```
+
+**Step 4 — Iterate over every child in A.** For each child, we need to find a matching partner in B. The `found` flag starts as false and will be set to true only if a match is found.
+
+---
+
+```java
         for (int i = 0; i < unmatched.size(); i++) {
             if (sameStructure(childA, unmatched.get(i))) {
-                unmatched.remove(i);  // mark as used — prevents double-matching
+```
+
+**Step 5 — Search B's remaining children for a match.** We call `sameStructure` recursively on the pair `(childA, candidateFromB)`. This recurse down the subtrees, applying all the same steps — it won't return true unless the entire subtrees are equal.
+
+---
+
+```java
+                unmatched.remove(i);
                 found = true;
                 break;
-            }
-        }
+```
+
+**Step 6 — Consume the match.** Once a match is found, remove that node from `unmatched` so it can't be reused by another child in A. Then set `found = true` and break — no need to keep searching B for this child.
+
+> Without removing the matched node, a single child in B could match multiple children in A, producing a false positive.
+
+---
+
+```java
         if (!found) return false;
     }
     return true;
 }
 ```
 
-> **Why track `unmatched`?** Without it, a single child in B could match multiple children in A, producing a false positive. Removing matched nodes ensures each child in B is only used once.
+**Step 7 — Final verdict.** If any child in A had no match in B, return false. If the loop completes with every child matched, return true — the subtrees are structurally equal.
+
+---
 
 **Complexity analysis:**
 - **Time:** O(n²) worst case — for each child in A, we scan remaining children in B recursively
 - **Space:** O(h) — recursion stack depth equals tree height
 - **Can we optimize?** Sorting children by a canonical key (e.g. `data`) before comparing brings it down to O(n log n). A full O(n) solution requires tree isomorphism algorithms (AHU), which is beyond typical interview scope.
+
+---
+
+**Execução loop a loop — rastreando cada chamada recursiva:**
+
+```
+CHAMADA 1: sameStructure(Brazil_A, Brazil_B)
+  ✔ data: "Brazil" == "Brazil"
+  ✔ children: 3 == 3
+  unmatched_B = [RJ_B, PR_B, SP_B]
+
+  OUTER childA = PR_A
+    INNER i=0: sameStructure(PR_A, RJ_B)
+      ✘ "PR" != "RJ"  → false
+    INNER i=1: sameStructure(PR_A, PR_B)
+      ✔ "PR" == "PR"
+      ✔ children: 2 == 2
+      unmatched_B = [Curitiba_B, Londrina_B]
+
+      OUTER childA = Londrina_A
+        INNER i=0: sameStructure(Londrina_A, Curitiba_B)
+          ✘ "Londrina" != "Curitiba"  → false
+        INNER i=1: sameStructure(Londrina_A, Londrina_B)
+          ✔ "Londrina" == "Londrina"  ✔ children: 0 == 0  → true
+        unmatched_B.remove(Londrina_B)  → [Curitiba_B]
+        found = true → break
+
+      OUTER childA = Curitiba_A
+        INNER i=0: sameStructure(Curitiba_A, Curitiba_B)
+          ✔ "Curitiba" == "Curitiba"  ✔ children: 0 == 0  → true
+        unmatched_B.remove(Curitiba_B)  → []
+        found = true → break
+
+      → return true  [PR_A == PR_B]
+    unmatched_B.remove(PR_B)  → [RJ_B, SP_B]
+    found = true → break
+
+  OUTER childA = SP_A
+    INNER i=0: sameStructure(SP_A, RJ_B)
+      ✘ "SP" != "RJ"  → false
+    INNER i=1: sameStructure(SP_A, SP_B)
+      ✔ "SP" == "SP"
+      ✔ children: 2 == 2
+      unmatched_B = [Campinas_B, SãoPaulo_B]
+
+      OUTER childA = SãoPaulo_A
+        INNER i=0: sameStructure(SãoPaulo_A, Campinas_B)
+          ✘ "São Paulo" != "Campinas"  → false
+        INNER i=1: sameStructure(SãoPaulo_A, SãoPaulo_B)
+          ✔ "São Paulo" == "São Paulo"  ✔ children: 0 == 0  → true
+        unmatched_B.remove(SãoPaulo_B)  → [Campinas_B]
+        found = true → break
+
+      OUTER childA = Campinas_A
+        INNER i=0: sameStructure(Campinas_A, Campinas_B)
+          ✔ "Campinas" == "Campinas"  ✔ children: 0 == 0  → true
+        unmatched_B.remove(Campinas_B)  → []
+        found = true → break
+
+      → return true  [SP_A == SP_B]
+    unmatched_B.remove(SP_B)  → [RJ_B]
+    found = true → break
+
+  OUTER childA = RJ_A
+    INNER i=0: sameStructure(RJ_A, RJ_B)
+      ✔ "RJ" == "RJ"
+      ✔ children: 2 == 2
+      unmatched_B = [Niterói_B, Rio_B]
+
+      OUTER childA = Rio_A
+        INNER i=0: sameStructure(Rio_A, Niterói_B)
+          ✘ "Rio" != "Niterói"  → false
+        INNER i=1: sameStructure(Rio_A, Rio_B)
+          ✔ "Rio" == "Rio"  ✔ children: 0 == 0  → true
+        unmatched_B.remove(Rio_B)  → [Niterói_B]
+        found = true → break
+
+      OUTER childA = Niterói_A
+        INNER i=0: sameStructure(Niterói_A, Niterói_B)
+          ✔ "Niterói" == "Niterói"  ✔ children: 0 == 0  → true
+        unmatched_B.remove(Niterói_B)  → []
+        found = true → break
+
+      → return true  [RJ_A == RJ_B]
+    unmatched_B.remove(RJ_B)  → []
+    found = true → break
+
+  Todos os 3 filhos de Brazil_A encontraram match  → return true
+
+RESULTADO FINAL: true
+```
+
+> Cada `✘` não causa `false` imediato no nível acima — ele apenas faz o loop inner avançar para o próximo candidato em `unmatched`. O `false` só é propagado se **nenhum** candidato em B bater com o filho atual de A.
 
 ---
 

@@ -1,6 +1,7 @@
 package com.victormoraes;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,9 +16,37 @@ public class TreeNode<T> {
         children = new ArrayList<>();
     }
 
-    public boolean sameStructure(TreeNode<String> other) {
+    public boolean sameStructure(TreeNode<T> other) {
 
-        return false;
+        if (!this.data.equals(other.data))
+            return false;
+
+        if (this.getChildren().size() != other.getChildren().size())
+            return false;
+
+        // Iterate over source A
+
+        // Compare each node in A with all children in B in a recursive way
+        for(TreeNode<T> node: this.getChildren()){
+
+            List<TreeNode<T>> unmatched = new LinkedList<>(other.getChildren());
+            boolean found = false;
+
+            for(TreeNode<T> otherNode: unmatched){
+
+                if(node.sameStructure(otherNode)){
+                    found = true;
+                    unmatched.remove(otherNode);
+                    break;
+                }
+            }
+
+            if(!found){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public TreeNode<T> addChild(T data) {
