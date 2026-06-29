@@ -1,7 +1,7 @@
 # Live Coding Practice: User Journey Log Analyzer (Java)
 
 ## Context
-At QuintoAndar, the web platform tracks millions of user interactions per minute. Every action a user takes on the website is logged as a character in a session string (e.g., `V` = View Property, `S` = Search, `F` = Apply Filter, `C` = Contact Broker, `P` = View Photos). 
+At , the web platform tracks millions of user interactions per minute. Every action a user takes on the website is logged as a character in a session string (e.g., `V` = View Property, `S` = Search, `F` = Apply Filter, `C` = Contact Broker, `P` = View Photos). 
 
 The Marketing and Analytics teams want to trigger real-time promotions. To do this, they need to find the **shortest continuous sequence of actions** in a user's session log that contains a specific set of target events. 
 

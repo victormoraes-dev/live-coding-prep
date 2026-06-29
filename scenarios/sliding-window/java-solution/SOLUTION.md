@@ -1,7 +1,7 @@
 # Scenario Analysis: Sparse Vector Dot Product
 
 ## 1. Context & Business Problem
-In high-scale environments like QuintoAndar's recommendation engine, matching a user profile to a property involves comparing massive vectors (e.g., 100,000+ dimensions representing features like "has balcony", "distance to subway", etc.). 
+In high-scale environments like 's recommendation engine, matching a user profile to a property involves comparing massive vectors (e.g., 100,000+ dimensions representing features like "has balcony", "distance to subway", etc.). 
 Because most users and properties only have a few specific features, these vectors are **highly sparse** (up to 99% of the values are `0`). Calculating the affinity (Dot Product) between these vectors efficiently is critical for API latency and infrastructure costs.
 
 ---

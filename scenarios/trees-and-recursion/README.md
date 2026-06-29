@@ -504,7 +504,7 @@ Sort children by a canonical key (e.g. node data) before comparing → O(n log n
 
 ## 5. Practice Scenarios
 
-Four scenarios based on real business cases are available in **`QuintoAndarLocationScenario.java`**:
+Four scenarios based on real business cases are available in **`LocationScenario.java`**:
 
 | # | Scenario | Context | What It Tests |
 |---|---|---|---|
