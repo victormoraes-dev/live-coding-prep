@@ -1,12 +1,12 @@
 # 📘 Practice Scenario 1: Database Merge (Order Independence)
 
-In this scenario, you will practice implementing a core algorithm for a **Staff Engineer** at QuintoAndar: comparing two hierarchical structures where the data is identical, but the order of elements may differ due to different source systems.
+In this scenario, you will practice implementing a core algorithm for a **Staff Engineer**: comparing two hierarchical structures where the data is identical, but the order of elements may differ due to different source systems.
 
 ---
 
 ## 📋 Scenario Context
 
-QuintoAndar is integrating property data from two different partners. 
+ is integrating property data from two different partners. 
 - **Partner A** sends a hierarchy where states and cities are ordered alphabetically.
 - **Partner B** sends the same data but ordered by the date the region was added to their system.
 

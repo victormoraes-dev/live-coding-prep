@@ -1,7 +1,7 @@
 # Live Coding Practice: User Journey Log Analyzer (Java)
 
 ## Context
-At QuintoAndar, the web platform tracks millions of user interactions per minute. Every action a user takes on the website is logged as a character in a session string (e.g., `V` = View Property, `S` = Search, `F` = Apply Filter, `C` = Contact Broker, `P` = View Photos). 
+A web platform tracks millions of user interactions per minute. Every action a user takes on the website is logged as a character in a session string (e.g., `V` = View Property, `S` = Search, `F` = Apply Filter, `C` = Contact Broker, `P` = View Photos). 
 
 The Marketing and Analytics teams want to trigger real-time promotions. To do this, they need to find the **shortest continuous sequence of actions** in a user's session log that contains a specific set of target events. 
 
@@ -31,12 +31,11 @@ The method `findShortestJourney(String session, String target)` should return a 
 
 | `session` | `target` | Expected Output | Explanation |
 | :--- | :--- | :--- | :--- |
-| `"VFSVCPFV"` | `"VFC"` | `"VCPFV"` | The shortest window containing 'V', 'F', and 'C' is "VCPFV". (Notice that "VFSVC" is length 5, but "VCPFV" is also length 5 and valid. "FVC" is not contiguous). Wait, "VFSVC" contains V, F, C. "VCPFV" contains V, C, P, F, V. The shortest is actually "FSVC" (length 4). Let's trace: F, S, V, C. Contains F, V, C. Yes! |
+| `"VFSVCPFV"` | `"VFC"` | `"FSVC"` | `"VFSVC"` (indices 0–4, length 5) is valid but `"FSVC"` (indices 1–4, length 4) is shorter and also contains F, V, and C. |
 | `"SSSSSS"` | `"V"` | `""` | The target event 'V' never occurred in the session. |
 | `"VFC"` | `"VFC"` | `"VFC"` | The entire session is the shortest window. |
 | `"VVVVV"` | `"VV"` | `"VV"` | The target requires two 'V's. The shortest window is "VV". |
 
-*(Note: In the first example, if `session` = `"VFSVCPFV"` and `target` = `"VFC"`, the shortest valid substring is `"FSVC"`).*
 
 ---
 

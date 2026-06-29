@@ -1,7 +1,7 @@
 # Live Coding Practice: Sparse Vector Dot Product (Java)
 
 ## Context
-In this "QuintoAndar-style" interview scenario, the focus is on **Data Structures, Memory Optimization, and High Performance**. You are tasked with implementing the core of a recommendation algorithm that calculates the affinity between a user profile and a property profile. These profiles are represented as massive vectors (e.g., 100,000 dimensions) where the vast majority of values are zeros (highly sparse).
+In this "-style" interview scenario, the focus is on **Data Structures, Memory Optimization, and High Performance**. You are tasked with implementing the core of a recommendation algorithm that calculates the affinity between a user profile and a property profile. These profiles are represented as massive vectors (e.g., 100,000 dimensions) where the vast majority of values are zeros (highly sparse).
 
 ## The Challenge
 Implement the `SparseVector` class. Your goal is to efficiently store the non-zero elements upon initialization and calculate the dot product between two instances of this class.

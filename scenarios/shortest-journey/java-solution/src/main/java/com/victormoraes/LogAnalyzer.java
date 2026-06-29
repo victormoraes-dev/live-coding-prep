@@ -1,6 +1,6 @@
 package com.victormoraes;
 
-public class LogAnalyzer {
+public class StringAnalyzer {
 
     public String findShortestJourney(String session, String target) {
         // Edge cases: if session is shorter than target, it's impossible.
@@ -33,10 +33,8 @@ public class LogAnalyzer {
             char rightChar = session.charAt(right);
             windowCounts[rightChar]++;
 
-            // If the character we just added is part of the target AND we actually needed
-            // it
-            // (meaning we haven't collected more of it than required), we count it as a
-            // match.
+            // If the character we just added is part of the target AND we actually needed it
+            // (meaning we haven't collected more of it than required), we count it as a match.
             if (targetCounts[rightChar] > 0 && windowCounts[rightChar] <= targetCounts[rightChar]) {
                 matchedEvents++;
             }

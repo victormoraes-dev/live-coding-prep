@@ -1,7 +1,7 @@
 # Live Coding Practice: Schedule State Validation (Java)
 
 ## Context
-At QuintoAndar, real estate agents have daily schedules that are constantly optimized by the routing engine. A schedule is represented as a string where:
+At , real estate agents have daily schedules that are constantly optimized by the routing engine. A schedule is represented as a string where:
 *   `L` represents a visit in the **East Zone** (Leste). Due to traffic rules, this visit can only be moved to an **earlier** time slot.
 *   `R` represents a visit in the **West Zone** (Oeste). This visit can only be moved to a **later** time slot.
 *   `_` represents a **free** time slot.
