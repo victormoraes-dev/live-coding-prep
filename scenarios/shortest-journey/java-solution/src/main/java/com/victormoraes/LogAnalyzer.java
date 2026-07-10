@@ -1,6 +1,6 @@
 package com.victormoraes;
 
-public class StringAnalyzer {
+public class LogAnalyzer {
 
     public String findShortestJourney(String session, String target) {
         // Edge cases: if session is shorter than target, it's impossible.

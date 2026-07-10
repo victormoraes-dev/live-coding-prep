@@ -28,11 +28,11 @@ public class SparseVector {
 
     public int dotProduct(SparseVector vector) {
 
-        int p1 = this.getIndexes().length > 0 ? this.getIndexes()[0] : 0;
-        int p2 = vector.getIndexes().length > 0 ? vector.getIndexes()[0] : 0;
-
         if (this.getIndexes().length == 0 || vector.getIndexes().length == 0)
             return 0;
+
+        int p1 = this.getIndexes().length > 0 ? this.getIndexes()[0] : 0;
+        int p2 = vector.getIndexes().length > 0 ? vector.getIndexes()[0] : 0;
 
         int product = 0;
 
