@@ -17,6 +17,7 @@ public class SparseVector {
         indexes = new int[length];
         values = new int[length];
         int currentIndex = 0;
+        
         for (int i = 0; i < arrayNumbers.length; i++) {
             if (arrayNumbers[i] != 0) {
                 indexes[currentIndex] = i;
@@ -36,6 +37,7 @@ public class SparseVector {
 
         int product = 0;
 
+        // Two pointer strategy
         while (p1 < getIndexes().length && p2 < vector.getIndexes().length) {
 
             if (p1 < p2)
